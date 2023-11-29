@@ -1,0 +1,80 @@
+{\Tiny
+\displaylines{
+设平面坐标系点p(x,y)的象限分类函数q(x,y)的分类如下:\\
+q(x,y)=
+\begin{cases}
+  & 0, & x > 0, y > 0 & \text{I} \\
+  & 1, & x < 0, y > 0 & \text{II} \\
+  & 2, & x < 0, y < 0 & \text{III} \\
+  & 3, & x > 0, y < 0 & \text{IV} \\
+  & 4, & x \ne 0, y = 0 & \text{X-axis} \\
+  & 5, & x = 0, y \ne 0 & \text{Y-axis} \\ 
+  & 6, & x = 0, y = 0 & \text{Origin}
+\end{cases}\\ \\
+
+卷积神经网络模型对象(QuadrantClassifier) \\ 
+通过如下操作对q(x,y)函数进行拟合操作: \\
+第一次线性变换: \\
+I_{1\times2}  =
+\begin{bmatrix}
+ x & y 
+\end{bmatrix} 
+&输入点p(x,y)代表两个特征(2个神经元) \\
+W1_{32\times2} = 
+\begin{bmatrix}
+ w_{0,0} & w_{0,1} \\
+ w_{1,0} & w_{1,1} \\
+ w_{2,0} & w_{2,1} \\
+ \dots  & \dots \\
+ w_{30,0} & w_{30,1} \\
+ w_{31,0} & w_{31,1} 
+\end{bmatrix} &隐藏层权重值(32\times2个)\\
+b1_{1 \times 32} = 
+\begin{bmatrix}
+ b0 & b1 & b2 & \dots & b30 & b31  
+\end{bmatrix} & 偏置值(32个值与隐藏层W1行数对应) \\
+第一层前向传播计算: \\
+O1_{1\times 32} = I_{1\times2}  \quad \times  \quad {W1_{32\times2}}^{T} \quad + \quad b1_{1 \times 32} \\
+使用Relu激活函数(非线性变换,得中间层作为输入层): \\
+I2_{1\times32}=Relu(O1_{1\times 32}) & 隐藏输入层(32个特征,32个神经元)\\ \\
+第二次线性变换: \\
+W2_{16\times32} =
+\begin{bmatrix}
+ w_{0,0} & w_{0,1} & w_{0,2} & \dots & w_{0,31} \\
+ w_{1,0} & w_{1,1} & w_{1,2} & \dots & w_{1,31} \\
+ w_{2,0} & w_{2,1} & w_{2,2} & \dots & w_{2,31} \\
+ \dots & \dots & \dots & \dots & \dots \\
+ w_{15,0} & w_{15,1} & w_{15,2} & \dots & w_{15,31} 
+\end{bmatrix} & 隐藏层权重值(16\times32个)\\
+b2_{1 \times 16} = 
+\begin{bmatrix}
+ b0 & b1 & b2 & \dots & b14 & b15  
+\end{bmatrix} & 偏置值(16个值与隐藏层W2行数对应) \\
+第二层前向传播计算: \\
+O2_{1\times 16} = I2_{1\times32}  \quad \times  \quad {W2_{16\times32}}^{T} \quad + \quad b2_{1 \times 16} \\
+使用Relu激活函数(非线性变换,得中间层作为输入层): \\
+I3_{1\times16}=Relu(O2_{1\times 16}) & 隐藏输入层(16个特征,16个神经元)\\ \\
+第三次线性变换: \\
+W3_{7\times16} =
+\begin{bmatrix}
+ w_{0,0} & w_{0,1} & w_{0,2} & \dots & w_{0,15} \\
+ w_{1,0} & w_{1,1} & w_{1,2} & \dots & w_{1,15} \\
+ w_{2,0} & w_{2,1} & w_{2,2} & \dots & w_{2,15} \\
+ \dots & \dots & \dots & \dots & \dots \\
+ w_{6,0} & w_{6,1} & w_{6,2} & \dots & w_{6,15} 
+\end{bmatrix} & 隐藏层权重值(7\times16个)\\
+b3_{1 \times 7} = 
+\begin{bmatrix}
+ b0 & b1 & b2 & \dots & b6 & b7  
+\end{bmatrix} & 偏置值(7个值与隐藏层W3行数对应) \\
+第三层前向传播计算: \\
+O4_{1\times 7} = I3_{1\times16}  \quad \times  \quad {W3_{7\times16}}^{T} \quad + \quad b3_{1 \times 7} 
+& 输出层(7个特征分类) \\\\
+将样本数据(样本坐标值,样本分类值)\\
+通过上述操作步骤,不断调节:  \\ 
+W1,b1,W2,b2,W3,b3权重数值, \\
+使得当前模型分类结果与原函数g(x,y) \\
+误着值越来越小，直到达到允许的误差范围内
+} 
+}
+
